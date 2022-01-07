@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client'
-
+import { Request, Response } from 'express'
 // @ts-ignore
 // import { createPubSub } from 'graphql-yoga';
 
@@ -11,12 +11,18 @@ import { PrismaClient } from '@prisma/client'
 
 export interface ContextType {
   db: PrismaClient
-  req?: any
-  res?: any
+  req: Request
+  res: Response
 }
 const db = new PrismaClient()
 
-export const context = async ({ req, res }: { req: any; res: any }) => {
+export const context = async ({
+  req,
+  res,
+}: {
+  req: Request
+  res: Response
+}) => {
   return {
     db,
     req,

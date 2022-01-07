@@ -1,5 +1,6 @@
 import { ContextType } from './context'
 import { DBType } from './types'
+import { getUserId } from './utils/auth'
 export const Query = {
   users: (_parent: any, _args: any, { db, res }: ContextType) => {
     const users = db.user.findMany({ include: { posts: true } })
@@ -28,7 +29,8 @@ export const Query = {
     if (!post) throw new Error('Post not found')
     return post
   },
-  posts: async (_parent: any, _args: any, { db }: DBType) => {
+  posts: async (_parent: any, _args: any, { db, req }: ContextType) => {
+    const { userId }: any = await getUserId(req)
     return await db.post.findMany({ include: { author: true } })
   },
 }

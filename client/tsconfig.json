@@ -26,7 +26,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "utils/withData.js",
+    "utils/withData.ts",
     "pages/_document.tw",
     "pages/_document.js"
   ],

@@ -1,16 +1,16 @@
-import { Form, Input, Button, Checkbox } from 'antd'
+import { Form, Input, Button, Checkbox } from "antd";
 
 const LoginForm = (props: any) => {
   const onFinish = async (values: any) => {
-    console.log({ values })
-    const res = await props.login({ variables: values })
+    console.log({ values });
+    const res = await props.login({ variables: values });
     // console.log('Success:', values)
-    console.log(res)
-  }
+    console.log(res);
+  };
 
   const onFinishFailed = (errorInfo: any) => {
-    console.log('Failed:', errorInfo)
-  }
+    console.log("Failed:", errorInfo);
+  };
 
   return (
     <Form
@@ -34,7 +34,7 @@ const LoginForm = (props: any) => {
         rules={[
           {
             required: true,
-            message: 'Please input your email!',
+            message: "Please input your email!",
           },
         ]}
       >
@@ -47,7 +47,7 @@ const LoginForm = (props: any) => {
         rules={[
           {
             required: true,
-            message: 'Please input your password!',
+            message: "Please input your password!",
           },
         ]}
       >
@@ -76,7 +76,7 @@ const LoginForm = (props: any) => {
         </Button>
       </Form.Item>
     </Form>
-  )
-}
+  );
+};
 
-export default LoginForm
+export default LoginForm;

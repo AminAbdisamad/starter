@@ -1,7 +1,7 @@
 // @ts-ignore
 // import { createServer } from 'graphql-yoga';
 import Express from 'express'
-import Cors from 'cors'
+import cors from 'cors'
 import { readFileSync } from 'fs'
 import { context } from './context'
 import { ApolloServer, gql } from 'apollo-server-express'
@@ -14,17 +14,25 @@ import { Query } from './Query'
 
 const resolvers = { Mutation, Query }
 
+// ALLOWED HOSTS
+const HOSTS = ['http://localhost:3000', 'https://studio.apollographql.com']
+
 async function StartApolloServer() {
   // Express App
   const app = Express()
-
+  app.use(
+    cors({
+      origin: HOSTS,
+      credentials: true,
+    }),
+  )
   // CORS configuration
-  const corsOptions = {
-    origin: 'http://localhost:3000',
-    // && 'http://localhost:4000/graphql',
-    // origin: '*',
-    credentials: true,
-  }
+
+  // const corsOptions = {
+  //   origin: HOSTS[0],
+  //   credential: true,
+  //   // 'Access-Control-Allow-Credentials': true,
+  // }
 
   const server = new ApolloServer({
     resolvers,
@@ -32,7 +40,7 @@ async function StartApolloServer() {
     context,
   })
   await server.start()
-  server.applyMiddleware({ app, cors: corsOptions })
+  server.applyMiddleware({ app, cors: false })
 
   // Enable Cors
 

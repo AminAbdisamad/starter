@@ -8,12 +8,7 @@ import {
   getUserId,
 } from './utils/auth'
 import { ContextType } from './context'
-import {
-  CreateUserInput,
-  DBType,
-  CreatePostInput,
-  UpdateUserInput,
-} from './types'
+import { CreateUserInput, CreatePostInput, UpdateUserInput } from './types'
 
 export const Mutation = {
   // Login
@@ -31,8 +26,15 @@ export const Mutation = {
     if (!isMatch) throw new Error('Incorrect email or password')
 
     // Create Refresh token
-    res.cookie('uid', createRefreshToken(user), { httpOnly: true })
+    createRefreshToken(res, user)
     return { user, token: createAccessToken(user) }
+  },
+  // Logout User
+  logout: (_: any, __: any, { res }: ContextType) => {
+    // res?.cookie()
+    // Send refresh token (res, "")
+    res?.clearCookie
+    return true
   },
   // User Mutation
   createUser: async (
@@ -104,6 +106,7 @@ export const Mutation = {
     { db, req }: ContextType,
   ) => {
     // Check if user is logged in before creating the post
+    console.log({ req })
     const { userId }: any = await getUserId(req)
     const id = parseInt(userId)
     const post = await db.post.create({

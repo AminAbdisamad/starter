@@ -1,19 +1,18 @@
 import { ApolloClient, ApolloLink, InMemoryCache } from "@apollo/client";
 // import { setContext } from "@apollo/client/link/context";
+// import { useAuth } from "./globalState";
 import { onError } from "apollo-link-error";
 import { getDataFromTree } from "@apollo/client/react/ssr";
 import { createUploadLink } from "apollo-upload-client";
 import withApollo from "next-with-apollo";
-import { getAccessToken } from "./security";
 import { endpoint, prodEndpoint } from "config";
 
 // import paginationField from "./paginationField";
 
-const accessToken = getAccessToken();
-console.log({ accessToken });
+// const { authToken } = useAuth();
+// console.log({ authToken });
+
 function createClient({ headers, initialState }) {
-  console.log(headers?.cookie);
-  console.log({ initialState });
   return new ApolloClient({
     link: ApolloLink.from([
       onError(({ graphQLErrors, networkError }) => {

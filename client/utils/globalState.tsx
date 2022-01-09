@@ -1,30 +1,66 @@
+import { useMutation } from "@apollo/client";
+import gql from "graphql-tag";
 import * as React from "react";
-import { ThemeProvider } from "styled-components";
-import useDarkMode from "use-dark-mode";
-import { lightTheme, darkTheme } from "styles/ThemeConfig";
 
-const LocalStateContext = React.createContext<any>(null);
-const LocalStateProvider = LocalStateContext.Provider;
+// const LocalStateContext = React.createContext<any>(null);
+// const LocalStateProvider = LocalStateContext.Provider;
 
-export interface DarkModeType {
-  value: boolean;
-  toggle: boolean;
-}
-export const ToggleThemeStateProvider: React.FC<{ children: any }> = ({
-  children,
-}) => {
-  const darkMode = useDarkMode(true);
+const authContext = React.createContext<any>(null);
 
-  const theme = darkMode.value ? darkTheme : lightTheme;
+export const AuthProvider: React.FC<{ children: any }> = ({ children }) => {
+  const [authToken, setAuthToken] = React.useState<string | null>(null);
+
+  const setToken = (token: any) => {
+    setAuthToken(token);
+  };
+  const getToken = () => {
+    return authToken;
+  };
+
+  console.log({ authToken });
+  // const getAuthHeaders = () => {
+  //   if (!authToken) return null;
+
+  //   return {
+  //     authorization: `Bearer ${authToken}`,
+  //   };
+  // };
+
+  const signOut = () => {
+    // Implement Signout Functinality here
+    setAuthToken(null);
+  };
+
+  const isSignedIn = () => {
+    if (authToken) {
+      return true;
+    } else {
+      return false;
+    }
+  };
 
   return (
-    <LocalStateProvider value={{ darkMode }}>
-      <ThemeProvider theme={theme}>{children}</ThemeProvider>
-    </LocalStateProvider>
+    <authContext.Provider
+      value={{
+        setToken,
+        getToken,
+        signOut,
+        isSignedIn,
+      }}
+    >
+      {children}
+    </authContext.Provider>
   );
 };
 
-export const useToggle = () => {
-  const all = React.useContext(LocalStateContext);
-  return all;
+export interface AuthType {
+  authToken?: string;
+  setAuthToken?: string;
+  setToken: (token: string) => void;
+  getToken: () => void;
+  signOut: () => boolean;
+  isSignedIn: () => boolean;
+}
+export const useAuth = (): AuthType => {
+  return React.useContext(authContext);
 };

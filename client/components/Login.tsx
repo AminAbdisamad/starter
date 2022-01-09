@@ -1,11 +1,37 @@
 import { Form, Input, Button, Checkbox } from "antd";
+import { useAuth } from "utils/globalState";
+import { setAccessToken } from "utils/security";
+import { useMutation, gql } from "@apollo/client";
+import * as React from "react";
+// Login Mutation
 
-const LoginForm = (props: any) => {
+const LOGIN = gql`
+  mutation LOGIN($email: String!, $password: String!) {
+    login(email: $email, password: $password) {
+      user {
+        id
+        email
+        username
+        name
+      }
+      token
+    }
+  }
+`;
+
+const LoginForm = () => {
+  const [login, { data, loading, error }] = useMutation(LOGIN);
+  // if (loading) return "Loading..";
+  // if (error) return "error...";
+  // const { setToken } = useAuth();
+  const token = data?.login.token;
+  setAccessToken(token);
+
+  // Setting token as global variable
+  // setToken(token);
+
   const onFinish = async (values: any) => {
-    console.log({ values });
-    const res = await props.login({ variables: values });
-    // console.log('Success:', values)
-    console.log(res);
+    const res = await login({ variables: values });
   };
 
   const onFinishFailed = (errorInfo: any) => {

@@ -18,10 +18,8 @@ export const getUserId = async (req: Request) => {
   return userId
 }
 
-export const createRefreshToken = (res: Response, user: User) => {
-  const token = jwt.sign({ userId: user.id }, REFRESH_KEY, { expiresIn: '7d' })
-  res.cookie('uid', token, { httpOnly: true, secure: true })
-  // path: '/refresh_token'
+export const createRefreshToken = (user: User) => {
+  return jwt.sign({ userId: user.id }, REFRESH_KEY, { expiresIn: '7d' })
 }
 
 export const createAccessToken = (user: User) => {
@@ -29,5 +27,15 @@ export const createAccessToken = (user: User) => {
 }
 
 export const sendRefreshToken = (res: Response, token: string) => {
-  res.cookie('uid', token, { httpOnly: true })
+  res.cookie('uid', token, { httpOnly: true, secure: true })
 }
+
+// Revoke Refresh Token
+// @Mutation(() => Boolean)
+// async revokeRefreshTokensForUser(@Arg("userId", () => Int) userId: number) {
+//   await getConnection()
+//     .getRepository(User)
+//     .increment({ id: userId }, "tokenVersion", 1);
+
+//   return true;
+// }

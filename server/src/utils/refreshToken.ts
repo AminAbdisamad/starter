@@ -7,22 +7,22 @@ const db = new PrismaClient()
 
 export function setupRefreshToken(app: Express) {
   return app.post('/refresh_token', async (req, res) => {
-    const token = req.cookies.uid
-    console.log({ token })
-    if (!token) {
+    const refreshToken = req.cookies.uid
+    console.log({ refreshToken })
+    if (!refreshToken) {
       return res.send({ ok: false, accessToken: '' })
     }
 
     let payload: any = null
     try {
-      payload = jwt.verify(token, process.env.REFRESH_KEY!)
+      payload = jwt.verify(refreshToken, process.env.REFRESH_KEY!)
     } catch (err) {
       console.log(err)
       return res.send({ ok: false, accessToken: '' })
     }
 
-    // token is valid and
-    // we can send back an access token
+    // refreshToken is valid and
+    // we can send back an access refreshToken
     const user = await db.user.findUnique({ where: { id: payload.userId } })
 
     if (!user) {

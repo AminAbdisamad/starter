@@ -27,7 +27,7 @@ export const Mutation = {
     if (!isMatch) throw new Error('Incorrect email or password')
 
     // Create Refresh token
-    sendRefreshToken(res, createAccessToken(user))
+    sendRefreshToken(res, createRefreshToken(user))
     return { user, token: createAccessToken(user) }
   },
   // Logout User

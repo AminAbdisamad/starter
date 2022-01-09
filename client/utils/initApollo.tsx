@@ -147,7 +147,6 @@ function createApolloClient(initialState = {}) {
     accessTokenField: "accessToken",
     isTokenValidOrUndefined: () => {
       const token = getAccessToken();
-      console.log({ AccessToken: token });
 
       if (!token) {
         return true;

@@ -1,8 +1,9 @@
-// import { useAuth } from "utils/globalState";
+import { useAuth } from "utils/globalState";
 const Index = () => {
-  // const { isSignedIn } = useAuth();
-  // console.log(isSignedIn());
-  return <h1>Hello There</h1>;
+  const { userInfo, isSignedIn } = useAuth();
+  console.log(userInfo?.id);
+  console.log(isSignedIn());
+  return <h1>Hello There {userInfo?.username}</h1>;
 };
 
 export default Index;

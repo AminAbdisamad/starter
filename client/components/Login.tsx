@@ -21,9 +21,12 @@ const LOGIN = gql`
 
 const LoginForm = () => {
   const [login, { data, loading, error }] = useMutation(LOGIN);
+  const { setUserInfo } = useAuth();
+  setUserInfo(data?.login.user);
   // if (loading) return "Loading..";
   // if (error) return "error...";
   // const { setToken } = useAuth();
+
   const token = data?.login.token;
   setAccessToken(token);
 

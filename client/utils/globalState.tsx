@@ -1,30 +1,34 @@
 import { useMutation } from "@apollo/client";
 import gql from "graphql-tag";
 import * as React from "react";
-
+import { getAccessToken } from "./security";
 // const LocalStateContext = React.createContext<any>(null);
 // const LocalStateProvider = LocalStateContext.Provider;
 
+export interface ContextTypes {
+  authToken: any;
+  setAuthToken?: any;
+  signOut: () => void;
+  isSignedIn: () => boolean;
+  setUserInfo: any;
+  userInfo: any;
+}
+
 const authContext = React.createContext<any>(null);
 
-export const AuthProvider: React.FC<{ children: any }> = ({ children }) => {
-  const [authToken, setAuthToken] = React.useState<string | null>(null);
-
-  const setToken = (token: any) => {
+interface ProviderProps {
+  children: React.ReactNode;
+}
+export const AuthProvider: React.FC<ProviderProps> = ({ children }) => {
+  const [authToken, setAuthToken] = React.useState<any>(null);
+  const [userInfo, setUserInfo] = React.useState("");
+  // React.useEffect(() => {
+  //   setTest("Testing react context api.....");
+  // }, []);
+  const token = getAccessToken();
+  React.useEffect(() => {
     setAuthToken(token);
-  };
-  const getToken = () => {
-    return authToken;
-  };
-
-  console.log({ authToken });
-  // const getAuthHeaders = () => {
-  //   if (!authToken) return null;
-
-  //   return {
-  //     authorization: `Bearer ${authToken}`,
-  //   };
-  // };
+  }, []);
 
   const signOut = () => {
     // Implement Signout Functinality here
@@ -42,10 +46,12 @@ export const AuthProvider: React.FC<{ children: any }> = ({ children }) => {
   return (
     <authContext.Provider
       value={{
-        setToken,
-        getToken,
+        setAuthToken,
+        authToken,
         signOut,
         isSignedIn,
+        setUserInfo,
+        userInfo,
       }}
     >
       {children}
@@ -53,14 +59,6 @@ export const AuthProvider: React.FC<{ children: any }> = ({ children }) => {
   );
 };
 
-export interface AuthType {
-  authToken?: string;
-  setAuthToken?: string;
-  setToken: (token: string) => void;
-  getToken: () => void;
-  signOut: () => boolean;
-  isSignedIn: () => boolean;
-}
-export const useAuth = (): AuthType => {
+export const useAuth = (): ContextTypes => {
   return React.useContext(authContext);
 };

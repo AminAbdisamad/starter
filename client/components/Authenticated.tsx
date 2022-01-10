@@ -1,3 +1,4 @@
+import * as React from "react";
 import { useMutation, gql, useQuery } from "@apollo/client";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -29,13 +30,16 @@ export const Authenticated = () => {
   const { isSignedIn, setUserInfo, setAuthToken } = useAuth();
   console.log(isSignedIn());
 
+  React.useEffect(() => {
+    setUserInfo(data?.me);
+  }, [data?.me]);
+
   if (loading) {
     return <div>Loading..</div>;
   }
   if (error) {
     return <div>{error.message}</div>;
   }
-  setUserInfo(data?.me);
 
   return (
     <>

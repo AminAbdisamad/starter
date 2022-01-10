@@ -24,7 +24,6 @@ const Layout: React.FC<{ children: any }> = ({ children }) => {
         const { accessToken } = await x.json();
         setAuthToken(accessToken);
         setAccessToken(accessToken);
-        console.log({ accessToken });
         setProcessing(false);
       }
     );

@@ -41,14 +41,15 @@ const LoginForm = () => {
     console.log("Failed:", errorInfo);
   };
 
-  if (loading) return <div>Loading..</div>;
-  if (error) return <div>{error.message}</div>;
-  if (data) {
-    const token = data?.login.token;
+  const token = data?.login.token;
+  React.useEffect(() => {
     setAccessToken(token);
     setAuthToken(token);
     setUserInfo(data?.login.user);
-  }
+  }, [token]);
+
+  if (loading) return <div>Loading..</div>;
+  if (error) return <div>Invalid email or password</div>;
 
   return (
     <Form

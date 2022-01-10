@@ -20,6 +20,17 @@ export const Query = {
     if (!user) throw new Error('user not found')
     return user
   },
+  // Me (LoggedIn User)
+  me: async (_parent: any, _args: any, { db, req }: ContextType) => {
+    // get current logged in user
+    const { userId }: any = await getUserId(req)
+
+    console.log({ me: userId })
+    if (!userId) {
+      throw new Error('JWT is required to access this resource')
+    }
+    return db.user.findUnique({ where: { id: userId } })
+  },
 
   // Posts
   post: async (_parent: any, args: any, { db }: DBType) => {

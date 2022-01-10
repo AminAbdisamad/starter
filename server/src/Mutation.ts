@@ -30,11 +30,13 @@ export const Mutation = {
     sendRefreshToken(res, createRefreshToken(user))
     return { user, token: createAccessToken(user) }
   },
+
   // Logout User
   logout: (_: any, __: any, { res }: ContextType) => {
     // res?.cookie()
     // Send refresh token (res, "")
-    res?.clearCookie
+    res?.clearCookie('uid')
+    console.log('Reached here')
     return true
   },
   // User Mutation

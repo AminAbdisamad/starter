@@ -17,3 +17,17 @@ export interface Post {
 export interface PostProps {
   posts: Post[];
 }
+
+export interface User {
+  id: string;
+  username: string;
+  email: string;
+  name: string;
+}
+
+export interface MeTypes {
+  me: User;
+}
+export interface UserType {
+  user: User;
+}

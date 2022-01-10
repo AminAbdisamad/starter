@@ -3,6 +3,7 @@ import { useAuth } from "utils/globalState";
 import { setAccessToken } from "utils/security";
 import { useMutation, gql } from "@apollo/client";
 import * as React from "react";
+import { useRouter } from "next/router";
 // Login Mutation
 
 const LOGIN = gql`
@@ -22,24 +23,32 @@ const LOGIN = gql`
 const LoginForm = () => {
   const [login, { data, loading, error }] = useMutation(LOGIN);
   const { setUserInfo } = useAuth();
-  setUserInfo(data?.login.user);
-  // if (loading) return "Loading..";
-  // if (error) return "error...";
-  // const { setToken } = useAuth();
-
-  const token = data?.login.token;
-  setAccessToken(token);
-
-  // Setting token as global variable
-  // setToken(token);
+  const router = useRouter();
+  const { setAuthToken } = useAuth();
 
   const onFinish = async (values: any) => {
-    const res = await login({ variables: values });
+    await login({
+      variables: values,
+      update(store, { data }) {
+        if (!data) return null;
+        data.login.user;
+      },
+    });
+    router.push("/dashboard");
   };
 
   const onFinishFailed = (errorInfo: any) => {
     console.log("Failed:", errorInfo);
   };
+
+  if (loading) return <div>Loading..</div>;
+  if (error) return <div>{error.message}</div>;
+  if (data) {
+    const token = data?.login.token;
+    setAccessToken(token);
+    setAuthToken(token);
+    setUserInfo(data?.login.user);
+  }
 
   return (
     <Form

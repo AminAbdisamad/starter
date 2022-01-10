@@ -1,9 +1,8 @@
-import { useAuth } from "utils/globalState";
-const Index = () => {
-  const { userInfo, isSignedIn } = useAuth();
-  console.log(userInfo?.id);
-  console.log(isSignedIn());
-  return <h1>Hello There {userInfo?.username}</h1>;
-};
+import * as React from "react";
+import LoginForm from "../components/Login";
 
-export default Index;
+export default function Login() {
+  // if usr logged in redirect to home page
+
+  return <LoginForm />;
+}

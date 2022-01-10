@@ -13,8 +13,11 @@ export const getUserId = async (req: Request) => {
   const token: string = header.replace('Bearer ', '')
 
   //   Get User provided Token
+
   const userId = await jwt.verify(token, ACCESS_KEY)
-  console.log({ userId })
+  console.log(userId)
+
+  if (!userId) throw new Error('JWT expired or undefined')
   return userId
 }
 
@@ -23,11 +26,15 @@ export const createRefreshToken = (user: User) => {
 }
 
 export const createAccessToken = (user: User) => {
-  return jwt.sign({ userId: user.id }, ACCESS_KEY, { expiresIn: '30s' })
+  return jwt.sign({ userId: user.id }, ACCESS_KEY, { expiresIn: '50m' })
 }
 
 export const sendRefreshToken = (res: Response, token: string) => {
-  res.cookie('uid', token, { httpOnly: true, secure: true })
+  try {
+    res.cookie('uid', token, { httpOnly: true, secure: true })
+  } catch (e: any) {
+    throw new Error(e)
+  }
 }
 
 // Revoke Refresh Token

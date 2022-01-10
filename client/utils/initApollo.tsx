@@ -14,7 +14,7 @@ import jwtDecode from "jwt-decode";
 import { getAccessToken, setAccessToken } from "./security";
 import { onError } from "apollo-link-error";
 import { ApolloLink } from "apollo-link";
-// import { useAuth } from "./globalState";
+import { useAuth } from "./globalState";
 /**
  * Creates and provides the apolloContext
  * to a next.js PageTree. Use it by wrapping

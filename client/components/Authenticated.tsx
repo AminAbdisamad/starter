@@ -26,7 +26,8 @@ export const Authenticated = () => {
   const router = useRouter();
   const { data, loading, error } = useQuery<MeTypes>(ME_QUEY);
   const [logout, { client }] = useMutation(LOGOUT);
-  const { isSignedIn, setUserInfo } = useAuth();
+  const { isSignedIn, setUserInfo, setAuthToken } = useAuth();
+  console.log(isSignedIn());
 
   if (loading) {
     return <div>Loading..</div>;
@@ -45,6 +46,7 @@ export const Authenticated = () => {
         onClick={async () => {
           await logout();
           setAccessToken("");
+          setAuthToken(null);
           client?.clearStore();
           router.push("/");
         }}

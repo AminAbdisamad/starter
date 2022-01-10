@@ -7,7 +7,7 @@ const DashboardPage = () => {
   if (!isSignedIn()) {
     Router.push("/");
   }
-  return <h1>Hello There {userInfo?.username}</h1>;
+  return <>{isSignedIn() && <h1> Hello There {userInfo?.username}</h1>}</>;
 };
 
 export default DashboardPage;

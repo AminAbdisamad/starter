@@ -29,10 +29,10 @@ const LoginForm = () => {
   const onFinish = async (values: any) => {
     await login({
       variables: values,
-      update(store, { data }) {
-        if (!data) return null;
-        data.login.user;
-      },
+      // update(store, { data }) {
+      //   if (!data) return null;
+      //   data.login.user;
+      // },
     });
     router.push("/dashboard");
   };

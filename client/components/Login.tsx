@@ -21,20 +21,28 @@ const LOGIN = gql`
 `;
 
 const LoginForm = () => {
-  const [login, { data, loading, error }] = useMutation(LOGIN);
+  const [login, { data, loading, error }] = useMutation(LOGIN, {
+    errorPolicy: "all",
+  });
   const { setUserInfo } = useAuth();
   const router = useRouter();
   const { setAuthToken } = useAuth();
 
+  // If there's error logging in return to login form
+
   const onFinish = async (values: any) => {
-    await login({
+    const res = await login({
       variables: values,
       // update(store, { data }) {
       //   if (!data) return null;
       //   data.login.user;
       // },
     });
-    router.push("/dashboard");
+    console.log({ res });
+    console.log({ error });
+    if (!res.errors) {
+      router.push("/dashboard");
+    }
   };
 
   const onFinishFailed = (errorInfo: any) => {
@@ -49,7 +57,6 @@ const LoginForm = () => {
   }, [token]);
 
   if (loading) return <div>Loading..</div>;
-  if (error) return <div>Invalid email or password</div>;
 
   return (
     <Form
@@ -67,17 +74,22 @@ const LoginForm = () => {
       onFinishFailed={onFinishFailed}
       autoComplete="off"
     >
+      {error && <div> {error.message}</div>}
       <Form.Item
-        label="email"
         name="email"
+        label="E-mail"
         rules={[
           {
+            type: "email",
+            message: "The input is not valid E-mail!",
+          },
+          {
             required: true,
-            message: "Please input your email!",
+            message: "Please input your E-mail!",
           },
         ]}
       >
-        <Input />
+        <Input type="email" />
       </Form.Item>
 
       <Form.Item

@@ -20,12 +20,12 @@ const Layout: React.FC<{ children: any }> = ({ children }) => {
   const router = useRouter();
 
   // check if authenticated
-  if (typeof window !== "undefined" && !isSignedIn()) {
-    return <div> {router.push("/")} </div>;
-  }
-  if (!isSignedIn()) {
-    return <div>Loading...</div>;
-  }
+  // if (typeof window !== "undefined" && !isSignedIn()) {
+  //   return <div> {router.push("/")} </div>;
+  // }
+  // if (!isSignedIn()) {
+  //   return <div>Loading...</div>;
+  // }
   React.useEffect(() => {
     fetch(restApiEndpoint, { method: "POST", credentials: "include" }).then(
       async (x) => {

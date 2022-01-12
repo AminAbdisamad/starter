@@ -32,7 +32,7 @@ function createClient({ headers, initialState }) {
         uri: process.env.NODE_ENV === "development" ? endpoint : prodEndpoint,
         headers: {
           ...headers,
-          authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImlhdCI6MTY0MTIwNjk3Nn0.6tH6C40Ki1YWYnhUgzrItDo2LQWx6tsMiUtsWxDcEYQ`,
+          authorization: `Bearer ${token}`,
         },
         fetchOptions: {
           credentials: "include",

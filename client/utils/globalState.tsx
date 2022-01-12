@@ -1,9 +1,5 @@
-import { useMutation } from "@apollo/client";
-import gql from "graphql-tag";
 import * as React from "react";
 import { getAccessToken } from "./security";
-// const LocalStateContext = React.createContext<any>(null);
-// const LocalStateProvider = LocalStateContext.Provider;
 
 export interface ContextTypes {
   authToken: any;
@@ -22,9 +18,7 @@ interface ProviderProps {
 export const AuthProvider: React.FC<ProviderProps> = ({ children }) => {
   const [authToken, setAuthToken] = React.useState<any>(null);
   const [userInfo, setUserInfo] = React.useState("");
-  // React.useEffect(() => {
-  //   setTest("Testing react context api.....");
-  // }, []);
+
   const token = getAccessToken();
   React.useEffect(() => {
     setAuthToken(token);

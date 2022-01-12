@@ -1,10 +1,11 @@
 import * as React from "react";
+
 import jwtDecode from "jwt-decode";
 import { Header } from "./Header";
 import { Dashboard } from "./Dashboard";
 // import Footer from "./Footer";
 import Head from "next/head";
-
+import { useRouter } from "next/router";
 import { NextSeo } from "next-seo";
 
 import { useAuth } from "utils/globalState";
@@ -14,10 +15,17 @@ import { restApiEndpoint } from "config";
 import { setAccessToken } from "utils/security";
 
 const Layout: React.FC<{ children: any }> = ({ children }) => {
-  const { setUserInfo, setAuthToken, isSignedIn } = useAuth();
-
+  const { setAuthToken, isSignedIn } = useAuth();
   const [processing, setProcessing] = React.useState(true);
+  const router = useRouter();
 
+  // check if authenticated
+  if (typeof window !== "undefined" && !isSignedIn()) {
+    return <div> {router.push("/")} </div>;
+  }
+  if (!isSignedIn()) {
+    return <div>Loading...</div>;
+  }
   React.useEffect(() => {
     fetch(restApiEndpoint, { method: "POST", credentials: "include" }).then(
       async (x) => {
@@ -29,6 +37,7 @@ const Layout: React.FC<{ children: any }> = ({ children }) => {
     );
   }, []);
   if (processing) return <div>Loading...</div>;
+
   return (
     <div>
       {isSignedIn() ? (
@@ -45,3 +54,13 @@ const Layout: React.FC<{ children: any }> = ({ children }) => {
   );
 };
 export default Layout;
+
+// export const getServerSideProps = async () => {
+//   const isAuthenticated = await checkAuthentication() // you need to implement this
+
+//   if (!isAuthenticated) {
+//     return {
+//       redirect: { destination: '/sign-in', permanent: false },
+//     }
+//   }
+// }

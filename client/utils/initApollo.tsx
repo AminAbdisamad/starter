@@ -170,7 +170,6 @@ function createApolloClient(initialState = {}) {
       });
     },
     handleFetch: (accessToken: string) => {
-      const { setAuthToken, authToken } = useAuth();
       setAccessToken(accessToken);
     },
     handleError: (err: any) => {
